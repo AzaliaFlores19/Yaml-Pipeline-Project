@@ -12,19 +12,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Simulación de la construcción del proyecto (aquí debes poner tu comando real de construcción)
       - name: Build artifact
-        run: echo "Building project..."
+        run: |
+          mkdir -p build
+          echo "Building project..." > build/artifact.txt
+
+      # Subir el artefacto a una "área de espera"
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: ./build/
+          path: build/
 
   security:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Simulación de la revisión de problemas de seguridad
       - name: Check for security issues
         run: echo "Checking for security issues..."
 
@@ -33,6 +41,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Simulación de la ejecución de pruebas unitarias
       - name: Run unit tests
         run: echo "Running unit tests..."
 
@@ -41,6 +51,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Simulación de la verificación del estilo de código
       - name: Lint code
         run: echo "Linting code..."
 
@@ -49,6 +61,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Simulación de la ejecución de análisis estático
       - name: Run static analysis
         run: echo "Running static analysis..."
 
@@ -58,11 +72,15 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+
+      # Descargar el artefacto de la "área de espera"
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: ./build/
+          path: build/
+
+      # Simulación del despliegue del artefacto en un servidor público
       - name: Deploy to server
         run: echo "Deploying to server..."
 
