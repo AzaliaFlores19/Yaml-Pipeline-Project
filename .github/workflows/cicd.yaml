@@ -12,18 +12,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Aquí puedes agregar los comandos necesarios para construir tu proyecto
       - name: Build artifact
         run: echo "Building project..."
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: build
+          path: ./build/
 
   security:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Aquí puedes agregar los comandos para verificar la seguridad de tu proyecto
       - name: Check for security issues
         run: echo "Checking for security issues..."
 
@@ -32,8 +33,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Aquí puedes agregar los comandos para ejecutar pruebas unitarias si existen
       - name: Run unit tests
         run: echo "Running unit tests..."
 
@@ -42,8 +41,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Aquí puedes agregar los comandos para asegurar que el estilo de código es correcto
       - name: Lint code
         run: echo "Linting code..."
 
@@ -52,8 +49,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Aquí puedes agregar los comandos para ejecutar análisis estático
       - name: Run static analysis
         run: echo "Running static analysis..."
 
@@ -63,8 +58,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      # Aquí puedes agregar los comandos para desplegar tu proyecto en un servidor público
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: ./build/
       - name: Deploy to server
         run: echo "Deploying to server..."
 
