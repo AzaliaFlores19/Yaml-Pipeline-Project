@@ -1,10 +1,12 @@
 {
-  "name": "your-project-name",
+  "name": "CI-CD-Pipeline-Project",
   "version": "1.0.0",
   "scripts": {
-    "build": "echo 'Building project...' && mkdir -p build && echo '<html><body><h1>Build Successful</h1></body></html>' > build/index.html",
-    "test": "echo 'Running tests...' && exit 0",  // Simulación de pruebas
-    "lint": "echo 'Linting code...' && exit 0",  // Simulación de lint
-    "analyze": "echo 'Running static analysis...' && exit 0"  // Simulación de análisis estático
-  }
+    "build": "mkdir -p build && echo '<html><body><h1>Hello, World!</h1></body></html>' > build/index.html",
+    "test": "echo 'Test step'",
+    "lint": "echo 'Lint step'",
+    "static-analysis": "echo 'Static analysis step'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
 }
