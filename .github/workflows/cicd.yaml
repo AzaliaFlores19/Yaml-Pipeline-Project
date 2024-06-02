@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - develop
 
 jobs:
   build:
@@ -13,20 +12,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
       - name: Install dependencies
         run: npm install
 
-      - name: Build project
+      - name: Build the project
         run: npm run build
 
-      - name: Run unit tests
-        run: npm test
-
-      - name: Lint code
-        run: npm run lint
-
-      - name: Run static analysis
-        run: npm run analyze
+      - name: Verify build output
+        run: ls -la build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -34,31 +32,81 @@ jobs:
           name: build
           path: build/
 
-  deploy:
+  security:
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Download artifact
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run security check
+        run: npm audit
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linter
+        run: npm run lint
+
+  static_analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run static analysis
+        run: npm run static-analysis
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build, tests, lint]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download build artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: build/
+          path: ./build
 
-      - name: Deploy to server
-        run: |
-          echo "Deploying to production server..."
-          # Aquí puedes añadir comandos para copiar archivos al servidor, por ejemplo:
-          # scp -r build/* user@server:/path/to/deployment
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./build
 
-  verify_deployment:
+  verify:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
       - name: Verify deployment
         run: |
-          echo "Verifying deployment..."
-          # Aquí puedes añadir comandos para verificar el despliegue, por ejemplo:
-          # curl -f http://server/path/to/deployment || exit 1
+          echo "Verifying deployment"
+          for i in {1..5}; do
+            curl -I https://DanielCruzParedes.github.io/CI-CD-Pipeline-Project/ | grep "200 OK" && break || sleep 10
+          done
