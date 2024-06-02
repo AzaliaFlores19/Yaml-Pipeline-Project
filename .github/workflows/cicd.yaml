@@ -44,6 +44,30 @@ jobs:
         run: |
           # Verificar estilo de código aquí
           # Ejemplo: eslint .
+build:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Construcción real del proyecto (reemplazar con tus comandos reales)
+    - name: Build artifact
+      run: |
+        # Ejecutar comandos de construcción aquí
+        # Ejemplo: npm install && npm run build
+
+    # Comprimir los artefactos en un archivo zip
+    - name: Compress artifact
+      run: |
+        zip -r build.zip . -x "*.git*" -x "*.github*"
+        mv build.zip $GITHUB_WORKSPACE/build.zip
+
+    # Subir el artefacto a una "área de espera"
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: $GITHUB_WORKSPACE/build.zip
 
   security_audit:
     runs-on: ubuntu-latest
