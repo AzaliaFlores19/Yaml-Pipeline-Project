@@ -108,5 +108,5 @@ jobs:
         run: |
           echo "Verifying deployment"
           for i in {1..5}; do
-            curl -I https://DanielCruzParedes.github.io/CI-CD-Pipeline-Project/ | grep "200 OK" && break || sleep 10
+            curl -I https://AzaliaFlores19.github.io/Yaml-Pipeline-Project/ | grep "200 OK" && break || sleep 10
           done
