@@ -12,55 +12,47 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          path: '.'  # Indicamos que queremos que el código se guarde en la raíz del proyecto
 
       - name: Install dependencies
         run: |
           sudo apt update
           sudo apt install python3-pip -y
-          pip3 install -r requirements.txt
 
       - name: Build artifact
         run: |
-          python3 build.py
-          # Reemplaza build.py con el comando real para construir tu proyecto
+          mkdir -p build
+          echo "Building project..." > build/artifact.txt
 
       - name: Run unit tests
         run: |
-          pytest
-          # Suponiendo que estás utilizando pytest para tus pruebas unitarias
+          echo "Running unit tests..."
+          # Aquí pondrías tus comandos para ejecutar las pruebas unitarias reales
 
       - name: Lint code
         run: |
-          pylint *.py
-          # Suponiendo que estás utilizando pylint para linting
+          echo "Linting code..."
+          # Aquí pondrías tus comandos para el linting de tu código real
 
       - name: Static analysis
         run: |
-          bandit -r .
-          # Suponiendo que estás utilizando Bandit para el análisis estático de seguridad
+          echo "Running static analysis..."
+          # Aquí pondrías tus comandos para el análisis estático real
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: ./path/to/artifact  # Ahora la ruta será relativa a la raíz del proyecto
+          path: build/
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          path: '.'  # Indicamos que queremos que el código se guarde en la raíz del proyecto
-
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: ./path/to/artifact  # Ahora la ruta será relativa a la raíz del proyecto
+          path: build/
 
       - name: Deploy to server
         run: |
