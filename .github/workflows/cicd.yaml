@@ -13,58 +13,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Construcción real del proyecto
-      - name: Build artifact
-        run: |
-          # Reemplaza este comando con tu comando real de construcción
-          # Por ejemplo: npm run build
-          echo "Building project..."
+      - name: Install dependencies
+        run: npm install
 
-      # Subir el artefacto a una "área de espera"
+      - name: Build artifact
+        run: npm run build
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Static analysis
+        run: npm run analyze  # Simulación de análisis estático
+
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: build/
-
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Ejecución real de pruebas unitarias
-      - name: Run unit tests
-        run: |
-          # Reemplaza este comando con tu comando real de pruebas unitarias
-          # Por ejemplo: npm test
-          echo "Running unit tests..."
-
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Verificación real del estilo de código
-      - name: Lint code
-        run: |
-          # Reemplaza este comando con tu comando real de linting
-          # Por ejemplo: eslint .
-          echo "Linting code..."
-
-  static_analysis:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Ejecución real de análisis estático
-      - name: Run static analysis
-        run: |
-          # Reemplaza este comando con tu comando real de análisis estático
-          # Por ejemplo: sonar-scanner
-          echo "Running static analysis..."
+          path: dist/
 
   deploy:
     runs-on: ubuntu-latest
@@ -73,19 +41,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Descargar el artefacto de la "área de espera"
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: build/
+          path: dist/
 
-      # Despliegue real del artefacto en un servidor público
-      - name: Deploy to server
+      - name: Deploy to production
         run: |
-          # Reemplaza este comando con tu comando real de despliegue
-          # Por ejemplo: scp -r build/* user@server:/path/to/deployment
-          echo "Deploying to server..."
+          # Simulación de despliegue en un servidor de producción
+          echo "Deploying to production server..."
 
   verify_deployment:
     runs-on: ubuntu-latest
@@ -93,6 +58,5 @@ jobs:
     steps:
       - name: Verify deployment
         run: |
-          # Comandos para verificar el despliegue
-          # Por ejemplo: curl http://deployed-server:port/
+          # Simulación de verificación de despliegue
           echo "Verifying deployment..."
