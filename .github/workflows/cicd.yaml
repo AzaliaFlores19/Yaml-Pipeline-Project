@@ -13,93 +13,62 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Construcción real del proyecto (reemplazar con tus comandos reales)
       - name: Build artifact
         run: |
-          # Ejecutar comandos de construcción aquí
-          # Ejemplo: npm install && npm run build
+          # Aquí deberías poner tus comandos reales de construcción
+          echo "Building project..."
+          # Ejemplo de comando de construcción: npm run build
 
-      # Comprimir los artefactos en un archivo zip
-      - name: List files before zipping
-        run: ls -la
-
-      - name: Compress artifact
+      - name: Run unit tests
         run: |
-          cd $GITHUB_WORKSPACE
-          zip -r build.zip . -x "*.git*" -x "*.github*"
-          mv build.zip $GITHUB_WORKSPACE/build.zip
+          # Ejemplo de comando para ejecutar pruebas unitarias
+          echo "Running unit tests..."
+          # Ejemplo de comando para pruebas unitarias: npm test
 
-      # Subir el artefacto a una "área de espera"
+      - name: Lint code
+        run: |
+          # Ejemplo de comando para ejecutar el linter
+          echo "Linting code..."
+          # Ejemplo de comando para linting: eslint .
+
+      - name: Run static analysis
+        run: |
+          # Ejemplo de comando para análisis estático
+          echo "Running static analysis..."
+          # Ejemplo de comando para análisis estático: sonar-scanner
+
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: $GITHUB_WORKSPACE/build.zip
+          path: build/
 
-  test:
+  deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Ejecutar pruebas unitarias (reemplazar con tus comandos reales)
-      - name: Run unit tests
-        run: |
-          # Ejecutar pruebas unitarias aquí
-          # Ejemplo: npm test
-
-  lint:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Verificar el estilo de código (reemplazar con tus comandos reales)
-      - name: Lint code
-        run: |
-          # Verificar estilo de código aquí
-          # Ejemplo: eslint .
-
-  security_audit:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Auditar dependencias en busca de problemas de seguridad (reemplazar con tus comandos reales)
-      - name: Audit dependencies for security issues
-        run: |
-          # Auditar dependencias aquí
-          # Ejemplo: npm audit
-
-  deploy_to_production:
-    runs-on: ubuntu-latest
-    needs: [test, lint, security_audit]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Descargar el artefacto de la "área de espera"
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: build
           path: build/
 
-      # Desplegar el artefacto en un servidor de producción (reemplazar con tus comandos reales)
-      - name: Deploy to production server
+      - name: Deploy to server
         run: |
-          # Desplegar artefacto en servidor de producción aquí
-          # Ejemplo: scp -r ./build/* user@production-server:/path/to/deployment
+          # Aquí deberías poner los comandos reales de despliegue
+          echo "Deploying to server..."
+          # Ejemplo de comando de despliegue: scp build/* user@server:/path/to/deployment
 
-  smoke_test:
+  verify_deployment:
     runs-on: ubuntu-latest
-    needs: deploy_to_production
+    needs: deploy
     steps:
-      - name: Smoke test deployed application
+      - name: Verify deployment
         run: |
-          # Ejecutar pruebas de humo para verificar el despliegue
-          # Ejemplo: curl http://production-server
+          # Aquí deberías poner los comandos reales de verificación de despliegue
+          echo "Verifying deployment..."
+          # Ejemplo de comandos de verificación: curl http://deployed-server:port/
+
