@@ -20,8 +20,12 @@ jobs:
           # Ejemplo: npm install && npm run build
 
       # Comprimir los artefactos en un archivo zip
+      - name: List files before zipping
+        run: ls -la
+
       - name: Compress artifact
         run: |
+          cd $GITHUB_WORKSPACE
           zip -r build.zip . -x "*.git*" -x "*.github*"
           mv build.zip $GITHUB_WORKSPACE/build.zip
 
