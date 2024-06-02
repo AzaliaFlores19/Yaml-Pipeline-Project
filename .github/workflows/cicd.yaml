@@ -12,42 +12,55 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          path: '.'  # Indicamos que queremos que el código se guarde en la raíz del proyecto
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install python3-pip -y
+          pip3 install -r requirements.txt
 
       - name: Build artifact
         run: |
-          mkdir -p build
-          echo "Building project..." > build/artifact.txt
+          python3 build.py
+          # Reemplaza build.py con el comando real para construir tu proyecto
 
       - name: Run unit tests
         run: |
-          echo "Running unit tests..."
-          # Aquí ejecutarías tus pruebas unitarias reales
+          pytest
+          # Suponiendo que estás utilizando pytest para tus pruebas unitarias
 
       - name: Lint code
         run: |
-          echo "Linting code..."
-          # Aquí ejecutarías el linting de tu código real
+          pylint *.py
+          # Suponiendo que estás utilizando pylint para linting
 
       - name: Static analysis
         run: |
-          echo "Running static analysis..."
-          # Aquí ejecutarías el análisis estático real
+          bandit -r .
+          # Suponiendo que estás utilizando Bandit para el análisis estático de seguridad
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: build/
+          path: ./path/to/artifact  # Ahora la ruta será relativa a la raíz del proyecto
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          path: '.'  # Indicamos que queremos que el código se guarde en la raíz del proyecto
+
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: build/
+          path: ./path/to/artifact  # Ahora la ruta será relativa a la raíz del proyecto
 
       - name: Deploy to server
         run: |
