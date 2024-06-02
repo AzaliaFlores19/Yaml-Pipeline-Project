@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build artifact
+      - name: Build project
         run: npm run build
 
       - name: Run unit tests
@@ -25,14 +25,14 @@ jobs:
       - name: Lint code
         run: npm run lint
 
-      - name: Static analysis
-        run: npm run analyze  # Simulación de análisis estático
+      - name: Run static analysis
+        run: npm run analyze
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: dist/
+          path: build/
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,12 +45,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: dist/
+          path: build/
 
-      - name: Deploy to production
+      - name: Deploy to server
         run: |
-          # Simulación de despliegue en un servidor de producción
           echo "Deploying to production server..."
+          # Aquí puedes añadir comandos para copiar archivos al servidor, por ejemplo:
+          # scp -r build/* user@server:/path/to/deployment
 
   verify_deployment:
     runs-on: ubuntu-latest
@@ -58,5 +59,6 @@ jobs:
     steps:
       - name: Verify deployment
         run: |
-          # Simulación de verificación de despliegue
           echo "Verifying deployment..."
+          # Aquí puedes añadir comandos para verificar el despliegue, por ejemplo:
+          # curl -f http://server/path/to/deployment || exit 1
