@@ -13,62 +13,54 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Simulación de la construcción del proyecto (aquí debes poner tu comando real de construcción)
+      # Construcción real del proyecto (reemplazar con tus comandos reales)
       - name: Build artifact
         run: |
-          mkdir -p build
-          echo "Building project..." > build/artifact.txt
+          # Ejecutar comandos de construcción aquí
+          # Ejemplo: npm install && npm run build
 
-      # Subir el artefacto a una "área de espera"
-      - name: Upload artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: build
-          path: build/
-
-  security:
+  test:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Simulación de la revisión de problemas de seguridad
-      - name: Check for security issues
-        run: echo "Checking for security issues..."
-
-  tests:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Simulación de la ejecución de pruebas unitarias
+      # Ejecutar pruebas unitarias (reemplazar con tus comandos reales)
       - name: Run unit tests
-        run: echo "Running unit tests..."
+        run: |
+          # Ejecutar pruebas unitarias aquí
+          # Ejemplo: npm test
 
   lint:
     runs-on: ubuntu-latest
+    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Simulación de la verificación del estilo de código
+      # Verificar el estilo de código (reemplazar con tus comandos reales)
       - name: Lint code
-        run: echo "Linting code..."
+        run: |
+          # Verificar estilo de código aquí
+          # Ejemplo: eslint .
 
-  static_analysis:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      # Simulación de la ejecución de análisis estático
-      - name: Run static analysis
-        run: echo "Running static analysis..."
-
-  deploy:
+  security_audit:
     runs-on: ubuntu-latest
     needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Auditar dependencias en busca de problemas de seguridad (reemplazar con tus comandos reales)
+      - name: Audit dependencies for security issues
+        run: |
+          # Auditar dependencias aquí
+          # Ejemplo: npm audit
+
+  deploy_to_production:
+    runs-on: ubuntu-latest
+    needs: [test, lint, security_audit]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -80,13 +72,18 @@ jobs:
           name: build
           path: build/
 
-      # Simulación del despliegue del artefacto en un servidor público
-      - name: Deploy to server
-        run: echo "Deploying to server..."
+      # Desplegar el artefacto en un servidor de producción (reemplazar con tus comandos reales)
+      - name: Deploy to production server
+        run: |
+          # Desplegar artefacto en servidor de producción aquí
+          # Ejemplo: scp -r ./build/* user@production-server:/path/to/deployment
 
-  verify_deployment:
+  smoke_test:
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: deploy_to_production
     steps:
-      - name: Verify deployment
-        run: echo "Verifying deployment..."
+      - name: Smoke test deployed application
+        run: |
+          # Ejecutar pruebas de humo para verificar el despliegue
+          # Ejemplo: curl http://production-server
+
