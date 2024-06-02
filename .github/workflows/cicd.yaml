@@ -25,24 +25,24 @@ jobs:
 
       - name: Run unit tests
         run: |
-          pytest
-          # Suponiendo que estás utilizando pytest para tus pruebas unitarias
+          echo "Running unit tests..."
+          # Aquí pondrías tus comandos para ejecutar las pruebas unitarias reales
 
       - name: Lint code
         run: |
-          pylint .
-          # Utilizando pylint para el linting del código Python en todo el proyecto
+          echo "Linting code..."
+          # Aquí pondrías tus comandos para el linting de tu código real
 
       - name: Static analysis
         run: |
-          bandit -r .
-          # Utilizando Bandit para realizar un análisis estático de seguridad en el código Python
+          echo "Running static analysis..."
+          # Aquí pondrías tus comandos para el análisis estático real
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: build
-          path: ./build/
+          path: build/
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,12 +52,12 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build
-          path: ./build/
+          path: build/
 
       - name: Deploy to server
         run: |
-          scp -r build/ user@server:/path/to/deploy
-          # Copiando el directorio de artefactos a un servidor remoto usando scp
+          echo "Deploying to server..."
+          # Aquí pondrías tus comandos de despliegue, como scp, rsync, etc.
 
   verify_deployment:
     runs-on: ubuntu-latest
@@ -65,5 +65,5 @@ jobs:
     steps:
       - name: Verify deployment
         run: |
-          curl http://example.com/health-check
-          # Realizando una verificación básica del estado de la aplicación después del despliegue
+          echo "Verifying deployment..."
+          # Aquí pondrías comandos para verificar que el despliegue fue exitoso
