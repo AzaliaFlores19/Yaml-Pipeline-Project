@@ -13,29 +13,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Install dependencies
+        run: |
+          npm ci
+          # Instalación de dependencias usando npm ci para garantizar la reproducibilidad del entorno
+
       - name: Build artifact
         run: |
-          # Aquí deberías poner tus comandos reales de construcción
-          echo "Building project..."
-          # Ejemplo de comando de construcción: npm run build
+          npm run build
+          # Compilación del proyecto usando npm run build
 
       - name: Run unit tests
         run: |
-          # Ejemplo de comando para ejecutar pruebas unitarias
-          echo "Running unit tests..."
-          # Ejemplo de comando para pruebas unitarias: npm test
+          npm test
+          # Ejecución de pruebas unitarias usando npm test
 
       - name: Lint code
         run: |
-          # Ejemplo de comando para ejecutar el linter
-          echo "Linting code..."
-          # Ejemplo de comando para linting: eslint .
+          npm run lint
+          # Linting del código usando npm run lint
 
       - name: Run static analysis
         run: |
-          # Ejemplo de comando para análisis estático
-          echo "Running static analysis..."
-          # Ejemplo de comando para análisis estático: sonar-scanner
+          npm run analyze
+          # Análisis estático del código usando npm run analyze
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
@@ -56,11 +57,10 @@ jobs:
           name: build
           path: build/
 
-      - name: Deploy to server
+      - name: Deploy to production
         run: |
-          # Aquí deberías poner los comandos reales de despliegue
-          echo "Deploying to server..."
-          # Ejemplo de comando de despliegue: scp build/* user@server:/path/to/deployment
+          # Comandos para desplegar en producción, por ejemplo, copiar los archivos a un servidor
+          scp -r build/* user@server:/path/to/deployment
 
   verify_deployment:
     runs-on: ubuntu-latest
@@ -68,7 +68,5 @@ jobs:
     steps:
       - name: Verify deployment
         run: |
-          # Aquí deberías poner los comandos reales de verificación de despliegue
-          echo "Verifying deployment..."
-          # Ejemplo de comandos de verificación: curl http://deployed-server:port/
-
+          # Comandos para verificar el despliegue, por ejemplo, realizar una solicitud HTTP a la aplicación desplegada y verificar la respuesta
+          curl http://deployed-server:port/
